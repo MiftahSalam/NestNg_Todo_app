@@ -16,6 +16,18 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "moduleResolution": "node",
+    "lib": [
+      "es2015"
+    ],
+    "paths": {
+      "@todo/*": [
+        "src/todo/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ]
+    }
   }
 }
