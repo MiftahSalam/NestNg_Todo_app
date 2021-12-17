@@ -33,7 +33,7 @@ export class TodoService {
     private readonly userService: UserService,
   ) {}
 
-  getAll(): Observable<TodoListDtos> {
+  getAll({ username }: UserDto): Observable<TodoListDtos> {
     // let listTodo: TodoDto[] = this.todos.map((todo: TodoEntity) =>
     //   toTodoDto(todo),
     // )
@@ -43,7 +43,12 @@ export class TodoService {
 
     // return of(todoList)
     return from(
-      this.todoRepository.find({ relations: ['tasks', 'owner'] }),
+      this.todoRepository.find({
+        relations: ['tasks', 'owner'],
+        where: {
+          owner: { username },
+        },
+      }),
     ).pipe(
       map((todos: TodoEntity[]) => {
         let listTodo: TodoDto[] = todos.map((todo: TodoEntity) =>
@@ -58,7 +63,7 @@ export class TodoService {
     )
   }
 
-  getOneTodo(id: string): Observable<TodoDto> {
+  getOneTodo(id: string, { username }: UserDto): Observable<TodoDto> {
     // return from(this.todos).pipe(
     //   find((todo: TodoEntity) => todo.id === id),
     //   catchError((err) => {
@@ -69,7 +74,12 @@ export class TodoService {
     //   }),
     // )
 
-    return from(this.todoRepository.findOne(id, { relations: ['owner'] })).pipe(
+    return from(
+      this.todoRepository.findOne(id, {
+        relations: ['owner'],
+        where: { owner: username },
+      }),
+    ).pipe(
       map((todo: TodoEntity) => {
         if (todo) return toTodoDto(todo)
       }),

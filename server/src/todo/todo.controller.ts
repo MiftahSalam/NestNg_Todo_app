@@ -26,13 +26,30 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Get()
-  findAll(): Observable<TodoListDtos> {
-    return this.todoService.getAll()
+  @UseGuards(AuthGuard('jwt'))
+  findAll(@Req() req: any): Observable<TodoListDtos> {
+    const user = req.user as Observable<UserDto>
+    return from(user).pipe(
+      switchMap((curUser: UserDto) => {
+        console.log('TodoController-findAll user', curUser)
+        return this.todoService.getAll(curUser)
+      }),
+    )
+    // return this.todoService.getAll()
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Observable<TodoDto> {
-    return this.todoService.getOneTodo(id)
+  @UseGuards(AuthGuard('jwt'))
+  findOne(@Req() req: any, @Param('id') id: string): Observable<TodoDto> {
+    const user = req.user as Observable<UserDto>
+    return from(user).pipe(
+      switchMap((curUser: UserDto) => {
+        console.log('TodoController-findOne user', curUser)
+        return this.todoService.getOneTodo(id, curUser)
+        // return this.todoService.getAll(curUser)
+      }),
+    )
+    // return this.todoService.getOneTodo(id)
   }
 
   @Post()

@@ -24,13 +24,33 @@ export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Get(':id')
-  findOneTask(@Param('id') id: string): Observable<TaskDto> {
-    return this.taskService.getTask(id)
+  @UseGuards(AuthGuard('jwt'))
+  findOneTask(@Req() req: any, @Param('id') id: string): Observable<TaskDto> {
+    const user = req.user as Observable<UserDto>
+    return from(user).pipe(
+      switchMap((curUser: UserDto) => {
+        console.log('TaskController-findOne user', curUser)
+        return this.taskService.getTask(id, curUser)
+      }),
+    )
+    // return this.taskService.getTask(id)
   }
 
   @Get('todo/:id')
-  findTaskByTodo(@Param('id') todoId: string): Observable<TaskDto[]> {
-    return this.taskService.getTaskByTodo(todoId)
+  @UseGuards(AuthGuard('jwt'))
+  findTaskByTodo(
+    @Req() req: any,
+    @Param('id') todoId: string,
+  ): Observable<TaskDto[]> {
+    const user = req.user as Observable<UserDto>
+    return from(user).pipe(
+      switchMap((curUser: UserDto) => {
+        console.log('TaskController-findOne user', curUser)
+        return this.taskService.getTaskByTodo(todoId, curUser)
+        // return this.taskService.getTask(id, curUser)
+      }),
+    )
+    // return this.taskService.getTaskByTodo(todoId)
   }
 
   @Post('todo/:id')

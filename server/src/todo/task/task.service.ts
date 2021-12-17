@@ -5,26 +5,9 @@ import { CreateTaskDto } from '@todo/dtos/task-create.dto'
 import { TaskDto } from '@todo/dtos/task.dto'
 import { TaskEntity } from '@todo/entities/task.entity'
 import { TodoEntity } from '@todo/entities/todo.entity'
-import {
-  BehaviorSubject,
-  catchError,
-  from,
-  map,
-  Observable,
-  of,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs'
+import { from, map, Observable, of, switchMap, take, tap } from 'rxjs'
 import { UserDto } from 'src/user/dtos/user.dto'
-import { UserEntity } from 'src/user/entities/user.entity'
-import {
-  DeleteResult,
-  getConnection,
-  QueryFailedError,
-  Repository,
-  UpdateResult,
-} from 'typeorm'
+import { DeleteResult, getConnection, Repository } from 'typeorm'
 
 @Injectable()
 export class TaskService {
@@ -35,31 +18,66 @@ export class TaskService {
     private readonly todoRepository: Repository<TodoEntity>,
   ) {}
 
-  getTask(id: string): Observable<TaskDto> {
-    return from(this.taskRepository.findOne(id)).pipe(
-      tap((task: TaskEntity) => {
+  getTask(id: string, user: UserDto): Observable<TaskDto> {
+    return from(
+      this.taskRepository
+        .createQueryBuilder('task')
+        .leftJoinAndSelect('task.todo', 'todo')
+        .leftJoinAndSelect('todo.owner', 'owner')
+        .where('task.id = :taskId', { taskId: id })
+        .getOne(),
+    ).pipe(
+      switchMap((task: TaskEntity) => {
         if (!task) {
           throw new HttpException('Task does not exist', HttpStatus.NOT_FOUND)
+        }
+
+        if (task.todo.owner?.username !== user.username) {
+          throw new HttpException(
+            'Current user do not own this task item',
+            HttpStatus.UNAUTHORIZED,
+          )
         }
 
         return of(toTaskDto(task))
       }),
     )
+
+    // return from(this.taskRepository.findOne(id)).pipe(
+    //   tap((task: TaskEntity) => {
+    //     if (!task) {
+    //       throw new HttpException('Task does not exist', HttpStatus.NOT_FOUND)
+    //     }
+
+    //     return of(toTaskDto(task))
+    //   }),
+    // )
   }
 
-  getTaskByTodo(todoId: string): Observable<TaskDto[]> {
+  getTaskByTodo(todoId: string, user: UserDto): Observable<TaskDto[]> {
     return from(
-      this.taskRepository.find({
-        where: {
-          todo: { id: todoId },
-        },
-        relations: ['todo'],
-      }),
+      this.taskRepository
+        .createQueryBuilder('task')
+        .leftJoinAndSelect('task.todo', 'todo')
+        .leftJoinAndSelect('todo.owner', 'owner')
+        .where('todo.id = :todoId', { todoId })
+        .getMany(),
     ).pipe(
-      tap((tasks: TaskEntity[]) => {
-        if (tasks.length === 0) {
-          throw new HttpException('Task does not exist', HttpStatus.NOT_FOUND)
+      switchMap((tasks: TaskEntity[]) => {
+        if (tasks.length > 0) {
+          Logger.log(
+            `getTaskByTodo. tasks[0] ${JSON.stringify(tasks[0])}`,
+            'TaskService',
+          )
+          if (tasks[0].todo.owner?.username !== user.username) {
+            throw new HttpException(
+              'Current user do not own this task item',
+              HttpStatus.UNAUTHORIZED,
+            )
+          }
         }
+
+        return of(tasks)
       }),
     )
   }

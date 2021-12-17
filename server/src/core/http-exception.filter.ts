@@ -31,7 +31,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       `${request.method} ${request.url}`,
       status === HttpStatus.INTERNAL_SERVER_ERROR
         ? exception.stack
-        : 'Non Internal Exception',
+        : exception.message,
       'HttpExceptionFilter',
     )
     response.status(status).json(errorResponse)

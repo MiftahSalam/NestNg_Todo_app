@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { DoAction } from 'projects/app-common/src/lib/action';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { combineLatestWith, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
 
@@ -12,7 +12,7 @@ import { TaskService } from '../../services/task.service';
   template: `
     <lib-task-create (action)="doAction($event)"></lib-task-create>
     <lib-task-list
-      [tasks]="tasks$ | async"
+      [tasks]="refresh$ | async"
       (action)="doAction($event)"
     ></lib-task-list>
   `,
@@ -20,7 +20,7 @@ import { TaskService } from '../../services/task.service';
 })
 export class TaskComponent implements OnInit {
   tasks$: Observable<Task[]> = new Observable<Task[]>();
-  private refresh$ = new BehaviorSubject<any>('');
+  refresh$ = new BehaviorSubject<Task[]>([]);
   private activeRoute$: Observable<Params> = new Observable<Params>();
   private todoId = '';
 
@@ -45,7 +45,15 @@ export class TaskComponent implements OnInit {
         return this.taskService.findAll(param['id']);
       })
     );
-    this.tasks$.subscribe();
+    this.tasks$.subscribe({
+      next: (tasks) => {
+        this.refresh$.next(tasks);
+      },
+      error: (err) => {
+        console.error('TaskComponent-ngOnInit-tasks-subcribe error', err);
+        this.refresh$.next([]);
+      },
+    });
   }
 
   doAction({ type, payload }: DoAction) {
@@ -66,13 +74,13 @@ export class TaskComponent implements OnInit {
   private createTask(task: string) {
     this.taskService
       .create(this.todoId, { name: task })
-      .subscribe(() => this.refresh$.next(''));
+      .subscribe(() => this.refresh$.next([]));
   }
   private deleteTask(task: Task) {
     if (confirm('Are you sure want to delete this item?')) {
       this.taskService
         .deleteTask(task.id!)
-        .subscribe(() => this.refresh$.next(''));
+        .subscribe(() => this.refresh$.next([]));
     }
   }
 }
