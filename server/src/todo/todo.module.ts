@@ -6,9 +6,9 @@ import { TodoController } from './todo.controller'
 import { TodoService } from './todo.service'
 import { TaskService } from './task/task.service'
 import { TaskController } from './task/task.controller'
-import { UserModule } from 'src/user/user.module'
-import { AuthModule } from 'src/auth/auth.module'
-import { UserEntity } from 'src/user/entities/user.entity'
+import { UserModule } from '../user/user.module'
+import { AuthModule } from '../auth/auth.module'
+import { UserEntity } from '../user/entities/user.entity'
 
 @Module({
   imports: [

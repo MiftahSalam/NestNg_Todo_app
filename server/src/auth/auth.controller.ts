@@ -8,8 +8,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import { Observable } from 'rxjs'
-import { CreateUserDto } from 'src/user/dtos/create-user.dto'
-import { LoginUserDto } from 'src/user/dtos/login-user.dto'
+import { CreateUserDto } from '../user/dtos/create-user.dto'
+import { LoginUserDto } from '../user/dtos/login-user.dto'
 import { LoginStatus } from './interfaces/login-status.interface'
 import { RegistrationStatus } from './interfaces/registration-status.interface'
 import { AuthService } from './services/auth/auth.service'

@@ -6,6 +6,7 @@ import { AppModule } from './app.module'
 import { getDbConnectionOptions, runDbMigrations } from '@shared/utils'
 import * as helmet from 'helmet'
 import * as rateLimit from 'express-rate-limit'
+import { HeaderInterceptor } from './core/header.interceptor'
 
 const port = process.env.PORT
 
@@ -15,6 +16,7 @@ async function bootstrap() {
     // AppModule.forRoot(await getDbConnectionOptions(process.env.NODE_ENV)),
   )
 
+  app.useGlobalInterceptors(new HeaderInterceptor())
   app.use(helmet())
   app.enableCors()
   app.use(

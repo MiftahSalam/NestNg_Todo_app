@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { from, map, Observable, switchMap } from 'rxjs'
-import { UserDto } from 'src/user/dtos/user.dto'
+import { UserDto } from '../user/dtos/user.dto'
 import { DeleteResult, UpdateResult } from 'typeorm'
 import { TodoCreateDto } from './dtos/todo-create.dto'
 import { TodoListDtos } from './dtos/todo-list.dto'

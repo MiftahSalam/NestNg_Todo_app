@@ -1,10 +1,10 @@
-import { TodoDto } from 'src/todo/dtos/todo.dto'
+import { TodoDto } from '../todo/dtos/todo.dto'
 import { TodoEntity } from '@todo/entities/todo.entity'
 import { Logger } from '@nestjs/common'
 import { TaskEntity } from '@todo/entities/task.entity'
 import { TaskDto } from '@todo/dtos/task.dto'
-import { UserEntity } from 'src/user/entities/user.entity'
-import { UserDto } from 'src/user/dtos/user.dto'
+import { UserEntity } from '../user/entities/user.entity'
+import { UserDto } from '../user/dtos/user.dto'
 
 export const toTodoDto = (data: TodoEntity): TodoDto => {
   const { id, name, description, tasks, owner } = data

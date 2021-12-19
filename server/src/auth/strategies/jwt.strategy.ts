@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { from, Observable } from 'rxjs'
-import { UserDto } from 'src/user/dtos/user.dto'
+import { UserDto } from '../../user/dtos/user.dto'
 import { JwtPayload } from '../interfaces/jwt-payload.interface'
 import { AuthService } from '../services/auth/auth.service'
 

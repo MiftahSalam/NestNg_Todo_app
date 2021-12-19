@@ -15,7 +15,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { CreateTaskDto } from '@todo/dtos/task-create.dto'
 import { TaskDto } from '@todo/dtos/task.dto'
 import { from, Observable, switchMap } from 'rxjs'
-import { UserDto } from 'src/user/dtos/user.dto'
+import { UserDto } from '../../user/dtos/user.dto'
 import { DeleteResult } from 'typeorm'
 import { TaskService } from './task.service'
 

@@ -13,15 +13,15 @@ import {
 } from 'rxjs'
 // import { v4 as uuidv4 } from 'uuid'
 
-import { todos } from 'src/mock/todos.mock'
+import { todos } from '../mock/todos.mock'
 import { TodoCreateDto } from './dtos/todo-create.dto'
 import { TodoDto } from './dtos/todo.dto'
 import { TodoEntity } from '@todo/entities/todo.entity'
-import { toTodoDto } from 'src/shared/mapper'
+import { toTodoDto } from '../shared/mapper'
 import { TodoListDtos } from './dtos/todo-list.dto'
-import { UserService } from 'src/user/services/user/user.service'
-import { UserDto } from 'src/user/dtos/user.dto'
-import { UserEntity } from 'src/user/entities/user.entity'
+import { UserService } from '../user/services/user/user.service'
+import { UserDto } from '../user/dtos/user.dto'
+import { UserEntity } from '../user/entities/user.entity'
 
 @Injectable()
 export class TodoService {

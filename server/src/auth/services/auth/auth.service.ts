@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { from, Observable, of, switchMap } from 'rxjs'
-import { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface'
-import { LoginStatus } from 'src/auth/interfaces/login-status.interface'
-import { RegistrationStatus } from 'src/auth/interfaces/registration-status.interface'
-import { CreateUserDto } from 'src/user/dtos/create-user.dto'
-import { LoginUserDto } from 'src/user/dtos/login-user.dto'
-import { UserDto } from 'src/user/dtos/user.dto'
-import { UserService } from 'src/user/services/user/user.service'
+import { JwtPayload } from '../../../auth/interfaces/jwt-payload.interface'
+import { LoginStatus } from '../../../auth/interfaces/login-status.interface'
+import { RegistrationStatus } from '../../../auth/interfaces/registration-status.interface'
+import { CreateUserDto } from '../../../user/dtos/create-user.dto'
+import { LoginUserDto } from '../../../user/dtos/login-user.dto'
+import { UserDto } from '../../../user/dtos/user.dto'
+import { UserService } from '../../../user/services/user/user.service'
 
 @Injectable()
 export class AuthService {

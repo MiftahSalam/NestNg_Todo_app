@@ -6,7 +6,7 @@ import { TaskDto } from '@todo/dtos/task.dto'
 import { TaskEntity } from '@todo/entities/task.entity'
 import { TodoEntity } from '@todo/entities/todo.entity'
 import { from, map, Observable, of, switchMap, take, tap } from 'rxjs'
-import { UserDto } from 'src/user/dtos/user.dto'
+import { UserDto } from '../../user/dtos/user.dto'
 import { DeleteResult, getConnection, Repository } from 'typeorm'
 
 @Injectable()
