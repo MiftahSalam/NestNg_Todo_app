@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:linux": "rm -rf ../server/front && mkdir ../server/front && ng build && mv dist/client/* ../server/front/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
