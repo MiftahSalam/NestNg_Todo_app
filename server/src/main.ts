@@ -32,7 +32,7 @@ async function bootstrap() {
     }),
   )
   await runDbMigrations()
-  await app.listen(port)
+  await app.listen(process.env.PORT || port)
 
   Logger.log(`Server started running on http://localhost:${port}`, 'Bootstrap')
 }
