@@ -12,8 +12,8 @@ const port = process.env.PORT
 
 async function bootstrap() {
   const app = await NestFactory.create(
-    AppModule,
-    // AppModule.forRoot(await getDbConnectionOptions(process.env.NODE_ENV)),
+    // AppModule,
+    AppModule.forRoot(await getDbConnectionOptions(process.env.NODE_ENV)),
   )
 
   app.useGlobalInterceptors(new HeaderInterceptor())

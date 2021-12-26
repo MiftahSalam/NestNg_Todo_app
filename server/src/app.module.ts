@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-// import { ConnectionOptions } from 'typeorm'
+import { ConnectionOptions } from 'typeorm'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TodoModule } from './todo/todo.module'
@@ -11,7 +11,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 
 @Module({
-  /**/
+  /*
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'front'),
@@ -24,15 +24,26 @@ import { join } from 'path'
   ],
   // controllers: [AppController],
   providers: [AppService],
+  */
 })
 export class AppModule {
-  // static forRoot(connOpt: ConnectionOptions): DynamicModule {
-  //   console.log('connOpt', connOpt)
-  //   return {
-  //     module: AppModule,
-  //     controllers: [AppController],
-  //     imports: [TodoModule, TypeOrmModule.forRoot(connOpt)],
-  //     providers: [AppService],
-  //   }
-  // }
+  static forRoot(connOpt: ConnectionOptions): DynamicModule {
+    console.log('connOpt', connOpt)
+    return {
+      module: AppModule,
+      // controllers: [AppController],
+      imports: [
+        ServeStaticModule.forRoot({
+          rootPath: join(__dirname, '..', 'front'),
+        }),
+        TodoModule,
+        UserModule,
+        AuthModule,
+        CoreModule,
+        TypeOrmModule.forRoot(),
+        // TypeOrmModule.forRoot(connOpt),
+      ],
+      providers: [AppService],
+    }
+  }
 }

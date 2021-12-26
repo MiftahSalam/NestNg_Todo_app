@@ -25,9 +25,9 @@ export const comparePassword = async (
   userPassword: string,
   currentPassword: string,
 ) => {
-  Logger.log(
-    `compare password. currentPassword ${currentPassword} and userPassword ${userPassword}`,
-  )
+  // Logger.log(
+  //   `compare password. currentPassword ${currentPassword} and userPassword ${userPassword}`,
+  // )
 
   return await bcrypt.compare(userPassword, currentPassword)
 }
