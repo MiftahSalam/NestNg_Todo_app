@@ -31,5 +31,9 @@ module.exports = [
     database: process.env.DATABASE_NAME,
     entities: ['dist/**/*.entity{.ts,.js}'],
     synchronize: true,
+    ssl: true,
+    extra: {
+      rejectUnauthorized: false,
+    },
   },
 ]
