@@ -33,7 +33,9 @@ module.exports = [
     synchronize: true,
     ssl: true,
     extra: {
-      rejectUnauthorized: false,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   },
 ]
